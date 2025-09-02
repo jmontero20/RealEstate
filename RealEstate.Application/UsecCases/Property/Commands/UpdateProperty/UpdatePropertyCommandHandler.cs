@@ -29,7 +29,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdateProperty
             // Obtener propiedad actual
             var propertyResult = await _unitOfWork.Properties.GetByIdAsync(command.Id, cancellationToken);
             var property = propertyResult.Value;
-            var oldPrice = property.Price;
+            var oldPrice = property!.Price;
 
             // Actualizar campos
             property.Name = command.Name;

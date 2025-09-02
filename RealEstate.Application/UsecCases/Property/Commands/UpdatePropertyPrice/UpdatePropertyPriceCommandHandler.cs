@@ -25,7 +25,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
             // Obtener la propiedad actual
             var propertyResult = await _unitOfWork.Properties.GetByIdAsync(command.PropertyId, cancellationToken);
             var property = propertyResult.Value;
-            var oldPrice = property.Price;
+            var oldPrice = property!.Price;
 
             property.Price = command.NewPrice;
             property.UpdatedAt = DateTime.UtcNow;

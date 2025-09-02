@@ -40,7 +40,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
 
             var response = new CreatePropertyResponse
             {
-                PropertyId = createResult.Value.IdProperty,
+                PropertyId = createResult!.Value!.IdProperty,
                 Name = createResult.Value.Name,
                 CodeInternal = createResult.Value.CodeInternal,
                 Price = createResult.Value.Price,
