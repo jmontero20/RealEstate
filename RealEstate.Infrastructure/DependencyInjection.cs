@@ -45,6 +45,7 @@ namespace RealEstate.Infrastructure
 
             // Ensure database is created and migrated
             await context.Database.EnsureCreatedAsync();
+            await Data.Seed.DataSeeder.SeedAsync(context);
 
             return serviceProvider;
         }

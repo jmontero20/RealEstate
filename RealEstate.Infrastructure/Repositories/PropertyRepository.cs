@@ -99,7 +99,7 @@ namespace RealEstate.Infrastructure.Repositories
             try
             {
                 property.UpdatedAt = DateTime.UtcNow;
-                await _context.Properties.AddAsync(property);
+                _context.Properties.Update(property);
                 return Result.Success();
             }
             catch (Exception ex)

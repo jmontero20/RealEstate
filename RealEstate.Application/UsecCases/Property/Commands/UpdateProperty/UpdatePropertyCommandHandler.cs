@@ -22,7 +22,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdateProperty
         public async Task<ApplicationResponse<UpdatePropertyResponse>> Handle(UpdatePropertyCommand command, CancellationToken cancellationToken)
         {
             // Iniciar transacción por si hay cambio de precio
-            var beginResult = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+             var beginResult = await _unitOfWork.BeginTransactionAsync(cancellationToken);
             if (beginResult.IsFailure)
                 return ApplicationResponse<UpdatePropertyResponse>.FailureResponse(beginResult.Error);
 
@@ -68,9 +68,15 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdateProperty
                 }
             }
 
-            var commitResult = await _unitOfWork.CommitTransactionAsync(cancellationToken);
+            var commitResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
             if (commitResult.IsFailure)
                 return ApplicationResponse<UpdatePropertyResponse>.FailureResponse(commitResult.Error);
+
+            var transactionResult = await _unitOfWork.CommitTransactionAsync(cancellationToken);
+            if (transactionResult.IsFailure)
+            {
+                return ApplicationResponse<UpdatePropertyResponse>.FailureResponse(transactionResult.Error);
+            }
 
             var response = new UpdatePropertyResponse
             {
