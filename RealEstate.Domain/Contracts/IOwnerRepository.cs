@@ -1,4 +1,5 @@
 ﻿using RealEstate.Domain.Comon;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstate.Domain.Contracts
 {

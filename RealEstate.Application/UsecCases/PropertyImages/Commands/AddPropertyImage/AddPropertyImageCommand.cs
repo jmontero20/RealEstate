@@ -1,10 +1,6 @@
 ﻿using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RealEstate.SharedKernel.Result;
+
 
 namespace RealEstate.Application.UsecCases.PropertyImages.Commands.AddPropertyImage
 {
@@ -13,5 +9,5 @@ namespace RealEstate.Application.UsecCases.PropertyImages.Commands.AddPropertyIm
         Stream ImageStream,
         string FileName,
         string ContentType
-    ) : ICommand<ApplicationResponse<AddPropertyImageResponse>>;
+    ) : ICommand<Result<AddPropertyImageResponse>>;
 }

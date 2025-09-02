@@ -1,5 +1,6 @@
 ﻿using RealEstate.Domain.Comon;
 using RealEstate.Domain.Entities;
+using RealEstate.SharedKernel.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;

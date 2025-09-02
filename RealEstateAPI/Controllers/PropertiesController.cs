@@ -34,12 +34,12 @@ namespace RealEstateAPI.Controllers
         {
             var result = await _mediator.Send(command, cancellationToken);
 
-            if (!result.Success)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return CreatedAtAction(
                 nameof(GetPropertiesWithFilters),
-                new { propertyId = result.Data!.PropertyId },
+                new { propertyId = result.Value!.PropertyId },
                 result);
         }
 
@@ -68,7 +68,7 @@ namespace RealEstateAPI.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            if (!result.Success)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -91,7 +91,7 @@ namespace RealEstateAPI.Controllers
             var command = new UpdatePropertyPriceCommand(id, request.NewPrice);
             var result = await _mediator.Send(command, cancellationToken);
 
-            if (!result.Success)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);
@@ -122,7 +122,7 @@ namespace RealEstateAPI.Controllers
 
             var result = await _mediator.Send(command, cancellationToken);
 
-            if (!result.Success)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return CreatedAtAction(
@@ -168,7 +168,7 @@ namespace RealEstateAPI.Controllers
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            if (!result.Success)
+            if (!result.IsSuccess)
                 return BadRequest(result);
 
             return Ok(result);

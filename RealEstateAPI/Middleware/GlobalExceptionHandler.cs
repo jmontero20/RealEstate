@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using RealEstate.Application.Common.Models;
+using RealEstate.SharedKernel.Result;
 using System.Net;
 using System.Text.Json;
 
@@ -58,97 +58,95 @@ namespace RealEstateAPI.Middleware
         private static ExceptionResponse CreateValidationExceptionResponse(ValidationException ex)
         {
             var errors = ex.Errors.Select(e => e.ErrorMessage).ToList();
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(errors, "Validation failed");
+            var Result = Result<object>.Failure(errors, "Validation failed");
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.BadRequest,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private static ExceptionResponse CreateArgumentExceptionResponse(ArgumentException ex)
         {
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(
-                ex.Message,
-                new List<string> { ex.ParamName ?? "Invalid argument" });
+            var Result = Result<object>.Failure(
+                new List<string> { ex.ParamName ?? "Invalid argument" }, ex.Message);
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.BadRequest,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private static ExceptionResponse CreateNotFoundResponse(KeyNotFoundException ex)
         {
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(
-                "Resource not found",
-                new List<string> { ex.Message });
+            var Result = Result<object>.Failure(
+              
+                new List<string> { ex.Message }, "Resource not found");
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.NotFound,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private static ExceptionResponse CreateUnauthorizedResponse(UnauthorizedAccessException ex)
         {
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(
-                "Unauthorized access",
-                new List<string> { ex.Message });
+            var Result = Result<object>.Failure(
+                new List<string> { ex.Message }, "Unauthorized access");
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.Unauthorized,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private static ExceptionResponse CreateInvalidOperationResponse(InvalidOperationException ex)
         {
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(
-                "Invalid operation",
-                new List<string> { ex.Message });
+            var Result = Result<object>.Failure(
+                new List<string> { ex.Message },
+                  "Invalid operation");
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.BadRequest,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private static ExceptionResponse CreateTimeoutResponse(TimeoutException ex)
         {
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(
-                "Request timeout",
-                new List<string> { ex.Message });
+            var Result = Result<object>.Failure(
+                
+                new List<string> { ex.Message }, "Request timeout");
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.RequestTimeout,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private static ExceptionResponse CreateGenericExceptionResponse(Exception ex)
         {
-            var applicationResponse = ApplicationResponse<object>.FailureResponse(
-                "An error occurred while processing your request",
-                new List<string> { "Please try again later or contact support if the problem persists" });
+            var Result = Result<object>.Failure(
+               
+                new List<string> { "Please try again later or contact support if the problem persists" }, "An error occurred while processing your request");
 
             return new ExceptionResponse
             {
                 StatusCode = (int)HttpStatusCode.InternalServerError,
-                Body = applicationResponse
+                Body = Result
             };
         }
 
         private class ExceptionResponse
         {
             public int StatusCode { get; set; }
-            public ApplicationResponse<object> Body { get; set; } = null!;
+            public Result<object> Body { get; set; } = null!;
         }
     }
 }

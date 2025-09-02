@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstateAPI.Filters
 {
@@ -64,9 +64,9 @@ namespace RealEstateAPI.Filters
             return await validator.ValidateAsync(context);
         }
 
-        private static ApplicationResponse<object> CreateValidationErrorResponse(List<string> errors)
+        private static Result<object> CreateValidationErrorResponse(List<string> errors)
         {
-            return ApplicationResponse<object>.FailureResponse(errors, "Validation failed");
+            return Result<object>.Failure(errors, "Validation failed");
         }
     }
 }

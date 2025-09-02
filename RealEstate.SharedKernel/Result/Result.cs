@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace RealEstate.Domain.Comon
+﻿namespace RealEstate.SharedKernel.Result
 {
     public class Result
     {
@@ -12,6 +6,7 @@ namespace RealEstate.Domain.Comon
         public bool IsFailure => !IsSuccess;
         public string Error { get; protected set; } = string.Empty;
         public List<string> Errors { get; protected set; } = new();
+        public string Message { get; set; } = string.Empty;
 
         protected Result(bool isSuccess, string error)
         {
@@ -45,11 +40,13 @@ namespace RealEstate.Domain.Comon
             Value = value;
         }
 
-        public static Result<T> Success(T value) => new(value, true, string.Empty);
-        public static new Result<T> Failure(string error) => new(default, false, error);
-        public static new Result<T> Failure(List<string> errors) => new(default, false, errors);
+        public static Result<T> Success(T value, string message = "Operation completed successfully") => new(value, true, string.Empty);
+        public static Result<T> Failure(string error, string message = "Operation failed")
+            => new(default, false, error);
+
+        public static Result<T> Failure(List<string> errors, string message = "Operation failed")
+            => new(default, false, errors);
 
         public static implicit operator Result<T>(T value) => Success(value);
     }
-
 }

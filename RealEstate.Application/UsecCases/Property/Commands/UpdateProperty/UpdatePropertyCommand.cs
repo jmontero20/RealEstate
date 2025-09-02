@@ -1,5 +1,5 @@
 ﻿using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
+using RealEstate.SharedKernel.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +16,5 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdateProperty
         string CodeInternal,
         int Year,
         int OwnerId
-    ) : ICommand<ApplicationResponse<UpdatePropertyResponse>>;
+    ) : ICommand<Result<UpdatePropertyResponse>>;
 }

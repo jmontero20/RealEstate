@@ -1,5 +1,6 @@
 ﻿using RealEstate.Domain.Comon;
 using RealEstate.Domain.Entities;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstate.Domain.Contracts
 {

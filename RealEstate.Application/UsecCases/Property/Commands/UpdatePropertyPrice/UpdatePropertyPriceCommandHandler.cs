@@ -1,12 +1,12 @@
 ﻿using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
 using RealEstate.Domain.Contracts;
 using RealEstate.Domain.Entities;
+using RealEstate.SharedKernel.Result;
 
 
 namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
 {
-    public class UpdatePropertyPriceCommandHandler : ICommandHandler<UpdatePropertyPriceCommand, ApplicationResponse<UpdatePropertyPriceResponse>>
+    public class UpdatePropertyPriceCommandHandler : ICommandHandler<UpdatePropertyPriceCommand, Result<UpdatePropertyPriceResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -15,12 +15,12 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApplicationResponse<UpdatePropertyPriceResponse>> Handle(UpdatePropertyPriceCommand command, CancellationToken cancellationToken)
+        public async Task<Result<UpdatePropertyPriceResponse>> Handle(UpdatePropertyPriceCommand command, CancellationToken cancellationToken)
         {
             // Iniciar transacción para Property + PropertyTrace
             var beginResult = await _unitOfWork.BeginTransactionAsync(cancellationToken);
             if (beginResult.IsFailure)
-                return ApplicationResponse<UpdatePropertyPriceResponse>.FailureResponse(beginResult.Error);
+                return Result<UpdatePropertyPriceResponse>.Failure(beginResult.Error);
 
             // Obtener la propiedad actual
             var propertyResult = await _unitOfWork.Properties.GetByIdAsync(command.PropertyId, cancellationToken);
@@ -34,7 +34,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
             if (updateResult.IsFailure)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                return ApplicationResponse<UpdatePropertyPriceResponse>.FailureResponse(updateResult.Error);
+                return Result<UpdatePropertyPriceResponse>.Failure(updateResult.Error);
             }
 
             var trace = new PropertyTrace
@@ -50,12 +50,12 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
             if (traceResult.IsFailure)
             {
                 await _unitOfWork.RollbackTransactionAsync(cancellationToken);
-                return ApplicationResponse<UpdatePropertyPriceResponse>.FailureResponse(traceResult.Error);
+                return Result<UpdatePropertyPriceResponse>.Failure(traceResult.Error);
             }
 
             var commitResult = await _unitOfWork.CommitTransactionAsync(cancellationToken);
             if (commitResult.IsFailure)
-                return ApplicationResponse<UpdatePropertyPriceResponse>.FailureResponse(commitResult.Error);
+                return Result<UpdatePropertyPriceResponse>.Failure(commitResult.Error);
 
             var response = new UpdatePropertyPriceResponse
             {
@@ -65,7 +65,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
                 UpdatedAt = DateTime.UtcNow
             };
 
-            return ApplicationResponse<UpdatePropertyPriceResponse>.SuccessResponse(response, "Property price updated successfully");
+            return Result<UpdatePropertyPriceResponse>.Success(response, "Property price updated successfully");
         }
     }
 }

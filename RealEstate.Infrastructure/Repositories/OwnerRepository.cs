@@ -2,6 +2,7 @@
 using RealEstate.Domain.Comon;
 using RealEstate.Domain.Contracts;
 using RealEstate.Infrastructure.Data;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstate.Infrastructure.Repositories
 {

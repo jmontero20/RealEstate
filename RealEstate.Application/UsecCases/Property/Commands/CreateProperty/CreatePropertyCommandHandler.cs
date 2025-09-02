@@ -1,10 +1,10 @@
 ﻿using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
 using RealEstate.Domain.Contracts;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
 {
-    public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyCommand, ApplicationResponse<CreatePropertyResponse>>
+    public class CreatePropertyCommandHandler : ICommandHandler<CreatePropertyCommand, Result<CreatePropertyResponse>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,7 +13,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApplicationResponse<CreatePropertyResponse>> Handle(CreatePropertyCommand command, CancellationToken cancellationToken)
+        public async Task<Result<CreatePropertyResponse>> Handle(CreatePropertyCommand command, CancellationToken cancellationToken)
         {
 
             var property = new Domain.Entities.Property
@@ -28,11 +28,11 @@ namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
 
             var createResult = await _unitOfWork.Properties.CreateAsync(property, cancellationToken);
             if (createResult.IsFailure)
-                return ApplicationResponse<CreatePropertyResponse>.FailureResponse(createResult.Error);
+                return Result<CreatePropertyResponse>.Failure(createResult.Error);
 
             var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
             if (saveResult.IsFailure)
-                return ApplicationResponse<CreatePropertyResponse>.FailureResponse(saveResult.Error);
+                return Result<CreatePropertyResponse>.Failure(saveResult.Error);
 
             // Obtener información del owner para la respuesta
             var ownerResult = await _unitOfWork.Owners.ExistsAsync(command.OwnerId, cancellationToken);
@@ -48,7 +48,7 @@ namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
                 CreatedAt = createResult.Value.CreatedAt
             };
 
-            return ApplicationResponse<CreatePropertyResponse>.SuccessResponse(response, "Property created successfully");
+            return Result<CreatePropertyResponse>.Success(response, "Property created successfully");
         }
     }
 }

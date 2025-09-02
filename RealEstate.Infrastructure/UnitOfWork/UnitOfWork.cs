@@ -3,6 +3,7 @@ using RealEstate.Domain.Comon;
 using RealEstate.Domain.Contracts;
 using RealEstate.Infrastructure.Data;
 using RealEstate.Infrastructure.Repositories;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstate.Infrastructure.UnitOfWork
 {

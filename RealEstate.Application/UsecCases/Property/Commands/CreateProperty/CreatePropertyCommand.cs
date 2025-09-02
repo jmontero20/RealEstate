@@ -1,10 +1,5 @@
 ﻿using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
 {
@@ -15,5 +10,5 @@ namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
         string CodeInternal,
         int Year,
         int OwnerId
-    ) : ICommand<ApplicationResponse<CreatePropertyResponse>>;
+    ) : ICommand<Result<CreatePropertyResponse>>;
 }

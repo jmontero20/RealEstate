@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Application", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Tests", "RealEstate.Tests\RealEstate.Tests.csproj", "{BCA74318-4363-432A-AE3B-7F123214B86E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.SharedKernel", "RealEstate.SharedKernel\RealEstate.SharedKernel.csproj", "{F52581D5-D844-4AFD-B0C6-779487BD3E06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BCA74318-4363-432A-AE3B-7F123214B86E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BCA74318-4363-432A-AE3B-7F123214B86E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BCA74318-4363-432A-AE3B-7F123214B86E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F52581D5-D844-4AFD-B0C6-779487BD3E06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F52581D5-D844-4AFD-B0C6-779487BD3E06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F52581D5-D844-4AFD-B0C6-779487BD3E06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F52581D5-D844-4AFD-B0C6-779487BD3E06}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

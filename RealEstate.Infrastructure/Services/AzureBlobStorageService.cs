@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs.Models;
 using RealEstate.Domain.Comon;
 using RealEstate.Domain.Contracts;
+using RealEstate.SharedKernel.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;

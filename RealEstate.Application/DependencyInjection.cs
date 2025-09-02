@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
 using RealEstate.Application.Common.Services;
 using RealEstate.Application.UsecCases.Property.Commands.CreateProperty;
 using RealEstate.Application.UsecCases.Property.Commands.UpdateProperty;
 using RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice;
 using RealEstate.Application.UsecCases.Property.Queries.GetPropertiesWithFilters;
 using RealEstate.Application.UsecCases.PropertyImages.Commands.AddPropertyImage;
+using RealEstate.SharedKernel.Result;
 using System.Reflection;
 
 
@@ -21,15 +21,15 @@ namespace RealEstate.Application
             services.AddScoped<IMediator, Mediator>();
 
             // Register Property Command Handlers
-            services.AddScoped<ICommandHandler<CreatePropertyCommand, ApplicationResponse<CreatePropertyResponse>>, CreatePropertyCommandHandler>();
-            services.AddScoped<ICommandHandler<UpdatePropertyCommand, ApplicationResponse<UpdatePropertyResponse>>, UpdatePropertyCommandHandler>();
-            services.AddScoped<ICommandHandler<UpdatePropertyPriceCommand, ApplicationResponse<UpdatePropertyPriceResponse>>, UpdatePropertyPriceCommandHandler>();
+            services.AddScoped<ICommandHandler<CreatePropertyCommand, Result<CreatePropertyResponse>>, CreatePropertyCommandHandler>();
+            services.AddScoped<ICommandHandler<UpdatePropertyCommand, Result<UpdatePropertyResponse>>, UpdatePropertyCommandHandler>();
+            services.AddScoped<ICommandHandler<UpdatePropertyPriceCommand, Result<UpdatePropertyPriceResponse>>, UpdatePropertyPriceCommandHandler>();
 
             // Register Property Query Handlers
-            services.AddScoped<IQueryHandler<GetPropertiesWithFiltersQuery, ApplicationResponse<IEnumerable<GetPropertiesWithFiltersResponse>>>, GetPropertiesWithFiltersQueryHandler>();
+            services.AddScoped<IQueryHandler<GetPropertiesWithFiltersQuery, Result<IEnumerable<GetPropertiesWithFiltersResponse>>>, GetPropertiesWithFiltersQueryHandler>();
 
             // Register PropertyImage Command Handlers
-            services.AddScoped<ICommandHandler<AddPropertyImageCommand, ApplicationResponse<AddPropertyImageResponse>>, AddPropertyImageCommandHandler>();
+            services.AddScoped<ICommandHandler<AddPropertyImageCommand, Result<AddPropertyImageResponse>>, AddPropertyImageCommandHandler>();
 
             // Register FluentValidation
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

@@ -1,16 +1,11 @@
 ﻿using RealEstate.Application.Common.Interfaces;
-using RealEstate.Application.Common.Models;
+using RealEstate.SharedKernel.Result;
 using RealEstate.Domain.Comon;
 using RealEstate.Domain.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealEstate.Application.UsecCases.Property.Queries.GetPropertiesWithFilters
 {
-    public class GetPropertiesWithFiltersQueryHandler : IQueryHandler<GetPropertiesWithFiltersQuery, ApplicationResponse<IEnumerable<GetPropertiesWithFiltersResponse>>>
+    public class GetPropertiesWithFiltersQueryHandler : IQueryHandler<GetPropertiesWithFiltersQuery, Result<IEnumerable<GetPropertiesWithFiltersResponse>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IBlobStorageService _blobStorageService;
@@ -21,7 +16,7 @@ namespace RealEstate.Application.UsecCases.Property.Queries.GetPropertiesWithFil
             _blobStorageService = blobStorageService;
         }
 
-        public async Task<ApplicationResponse<IEnumerable<GetPropertiesWithFiltersResponse>>> Handle(GetPropertiesWithFiltersQuery query, CancellationToken cancellationToken)
+        public async Task<Result<IEnumerable<GetPropertiesWithFiltersResponse>>> Handle(GetPropertiesWithFiltersQuery query, CancellationToken cancellationToken)
         {
             var filters = new PropertyFilters
             {
@@ -38,7 +33,7 @@ namespace RealEstate.Application.UsecCases.Property.Queries.GetPropertiesWithFil
 
             var propertiesResult = await _unitOfWork.Properties.GetWithFiltersAsync(filters, cancellationToken);
             if (propertiesResult.IsFailure)
-                return ApplicationResponse<IEnumerable<GetPropertiesWithFiltersResponse>>.FailureResponse(propertiesResult.Error);
+                return Result<IEnumerable<GetPropertiesWithFiltersResponse>>.Failure(propertiesResult.Error);
 
             var properties = propertiesResult.Value;
             var responseList = new List<GetPropertiesWithFiltersResponse>();
@@ -70,7 +65,7 @@ namespace RealEstate.Application.UsecCases.Property.Queries.GetPropertiesWithFil
                 responseList.Add(response);
             }
 
-            return ApplicationResponse<IEnumerable<GetPropertiesWithFiltersResponse>>.SuccessResponse(responseList, "Properties retrieved successfully");
+            return Result<IEnumerable<GetPropertiesWithFiltersResponse>>.Success(responseList, "Properties retrieved successfully");
         }
     }
 }
