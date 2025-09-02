@@ -1,13 +1,9 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using RealEstate.Domain.Comon;
 using RealEstate.Domain.Contracts;
 using RealEstate.SharedKernel.Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RealEstate.Infrastructure.Services
 {
@@ -27,7 +23,7 @@ namespace RealEstate.Infrastructure.Services
             try
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient(_containerName);
-                await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob, cancellationToken: cancellationToken);
+                await containerClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
 
                 var uniqueFileName = $"{Guid.NewGuid()}_{fileName}";
                 var blobClient = containerClient.GetBlobClient(uniqueFileName);
@@ -59,11 +55,30 @@ namespace RealEstate.Infrastructure.Services
                 if (!await blobClient.ExistsAsync(cancellationToken))
                     return Result<string>.Failure($"Blob '{fileName}' not found");
 
-                return Result<string>.Success(blobClient.Uri.ToString());
+                // Crear SAS que dure 7 días
+                var sasBuilder = new BlobSasBuilder
+                {
+                    BlobContainerName = _containerName,
+                    BlobName = fileName,
+                    Resource = "b", // "b" = blob
+                    ExpiresOn = DateTimeOffset.UtcNow.AddDays(7) // Expira en 7 días
+                };
+
+                sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+                // Necesitamos las credenciales (desde el BlobServiceClient)
+                if (!_blobServiceClient.CanGenerateAccountSasUri)
+                {
+                    return Result<string>.Failure("The BlobServiceClient is not authorized to generate SAS tokens. Use a connection string with AccountKey.");
+                }
+
+                var sasUri = blobClient.GenerateSasUri(sasBuilder);
+
+                return Result<string>.Success(sasUri.ToString());
             }
             catch (Exception ex)
             {
-                return Result<string>.Failure($"Failed to get image URL from Azure Blob Storage: {ex.Message}");
+                return Result<string>.Failure($"Failed to generate SAS URL: {ex.Message}");
             }
         }
     }

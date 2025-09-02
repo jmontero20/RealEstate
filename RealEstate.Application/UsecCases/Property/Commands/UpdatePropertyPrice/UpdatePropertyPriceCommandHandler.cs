@@ -53,6 +53,10 @@ namespace RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice
                 return Result<UpdatePropertyPriceResponse>.Failure(traceResult.Error);
             }
 
+            var saveResult = await _unitOfWork.SaveChangesAsync(cancellationToken);
+            if (saveResult.IsFailure)
+                return Result<UpdatePropertyPriceResponse>.Failure(saveResult.Error);
+
             var commitResult = await _unitOfWork.CommitTransactionAsync(cancellationToken);
             if (commitResult.IsFailure)
                 return Result<UpdatePropertyPriceResponse>.Failure(commitResult.Error);

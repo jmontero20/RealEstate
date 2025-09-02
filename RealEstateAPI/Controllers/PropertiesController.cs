@@ -6,6 +6,7 @@ using RealEstate.Application.UsecCases.Property.Commands.UpdateProperty;
 using RealEstate.Application.UsecCases.Property.Commands.UpdatePropertyPrice;
 using RealEstate.Application.UsecCases.Property.Queries.GetPropertiesWithFilters;
 using RealEstate.Application.UsecCases.PropertyImages.Commands.AddPropertyImage;
+using RealEstate.SharedKernel.Result;
 
 namespace RealEstateAPI.Controllers
 {
@@ -28,8 +29,8 @@ namespace RealEstateAPI.Controllers
         /// <returns>Created property information</returns>
         [HttpPost]
         [ProducesResponseType(typeof(CreatePropertyResponse), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateProperty([FromBody] CreatePropertyCommand command, CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(command, cancellationToken);
@@ -52,9 +53,9 @@ namespace RealEstateAPI.Controllers
         /// <returns>Updated property information</returns>
         [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(UpdatePropertyResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateProperty(int id, [FromBody] UpdatePropertyCommand request, CancellationToken cancellationToken)
         {
             var command = new UpdatePropertyCommand(
@@ -83,9 +84,9 @@ namespace RealEstateAPI.Controllers
         /// <returns>Price change information</returns>
         [HttpPut("{id:int}/price")]
         [ProducesResponseType(typeof(UpdatePropertyPriceResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdatePropertyPrice(int id, [FromBody] UpdatePropertyPriceCommand request, CancellationToken cancellationToken)
         {
             var command = new UpdatePropertyPriceCommand(id, request.NewPrice);
@@ -106,9 +107,9 @@ namespace RealEstateAPI.Controllers
         /// <returns>Added image information</returns>
         [HttpPost("{id:int}/images")]
         [ProducesResponseType(typeof(AddPropertyImageResponse), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AddPropertyImage(int id, IFormFile file, CancellationToken cancellationToken)
         {
             if (file == null || file.Length == 0)
@@ -147,8 +148,8 @@ namespace RealEstateAPI.Controllers
         /// <returns>List of properties with filters applied</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<GetPropertiesWithFiltersResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(Result), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetPropertiesWithFilters(
             [FromQuery] string? name = null,
             [FromQuery] string? address = null,
