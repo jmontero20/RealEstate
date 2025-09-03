@@ -174,7 +174,7 @@ namespace RealEstate.Tests.ObjectMothers.Commands
             Id: 1,
             Name: "Modern Downtown Apartment - Price Reduced",
             Address: "123 Main Street, Miami, FL 33101",
-            Price: 650000.00m, // Reducción de $100K desde el precio original
+            Price: 650000.00m, 
             CodeInternal: "MIA001",
             Year: 2020,
             OwnerId: 1

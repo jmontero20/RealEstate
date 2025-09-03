@@ -35,8 +35,8 @@ namespace RealEstate.Application.UsecCases.Property.Commands.CreateProperty
                 return Result<CreatePropertyResponse>.Failure(saveResult.Error);
 
             // Obtener información del owner para la respuesta
-            var ownerResult = await _unitOfWork.Owners.ExistsAsync(command.OwnerId, cancellationToken);
-            var ownerName = ownerResult.IsSuccess ? "Owner" : "Unknown"; // Simplificado
+            var ownerResult = await _unitOfWork.Owners.GetByIdAsync(command.OwnerId, cancellationToken);
+            var ownerName = ownerResult.IsSuccess ? ownerResult.Value!.Name : "Unknown"; // Simplificado
 
             var response = new CreatePropertyResponse
             {
